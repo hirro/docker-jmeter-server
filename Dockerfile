@@ -9,7 +9,7 @@ ENV IP 127.0.0.1
 ENV RMI_PORT 1099
 
 RUN apt-get -qq update && \
-    apt-get -yqq install openjdk-7-jre-headless unzip && \
+    apt-get -yqq install openjdk-8-jre-headless unzip && \
     apt-get -q clean && \
     rm -rf /var/lib/apt/lists/*
 
