@@ -2,7 +2,7 @@ FROM ubuntu:14.04
 
 MAINTAINER Jesper Rasmussen <hello@jesperrasmussen.com>
 
-ENV JMETER_VERSION 3.0
+ENV JMETER_VERSION 2.13
 ENV JMETER_HOME /usr/local/apache-jmeter-${JMETER_VERSION}
 ENV JMETER_BIN $JMETER_HOME/bin
 ENV IP 127.0.0.1
