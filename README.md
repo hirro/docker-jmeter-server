@@ -1,4 +1,6 @@
-# JMeter in Server Mode
+# JMeter 3.0 in Server Mode
+
+Since there were no jmeter 3 servers
 
 [![](https://badge.imagelayers.io/hhcordero/docker-jmeter-server:latest.svg)](https://imagelayers.io/?images=hhcordero/docker-jmeter-server:latest 'Get your own badge on imagelayers.io')
 

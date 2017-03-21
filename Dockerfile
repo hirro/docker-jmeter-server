@@ -1,11 +1,12 @@
 FROM ubuntu:16.04
 
-MAINTAINER Jesper Rasmussen <hello@jesperrasmussen.com>
+MAINTAINER Jim Arnell <hirro@users.noreply.github.com>
 
-ENV JMETER_VERSION 3.0
+# http://apache.mirrors.spacedump.net//jmeter/binaries/apache-jmeter-3.1.tgz
+ENV JMETER_VERSION 3.1
 ENV JMETER_HOME /usr/local/apache-jmeter-${JMETER_VERSION}
 ENV JMETER_BIN $JMETER_HOME/bin
-ENV IP 127.0.0.1
+ENV IP 0.0.0.0
 ENV RMI_PORT 1099
 
 RUN apt-get -qq update && \
