@@ -1,6 +1,6 @@
 # JMeter in Server Mode
 
-Forked since I needed jmeter 3.1 slaves.
+Forked since I needed jmeter 3.2 slaves.
 
 [![](https://badge.imagelayers.io/hhcordero/docker-jmeter-server:latest.svg)](https://imagelayers.io/?images=hhcordero/docker-jmeter-server:latest 'Get your own badge on imagelayers.io')
 

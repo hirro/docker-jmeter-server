@@ -2,8 +2,7 @@ FROM ubuntu:16.04
 
 MAINTAINER Jim Arnell <hirro@users.noreply.github.com>
 
-# http://apache.mirrors.spacedump.net//jmeter/binaries/apache-jmeter-3.1.tgz
-ENV JMETER_VERSION 3.1
+ENV JMETER_VERSION 3.2
 ENV JMETER_HOME /usr/local/apache-jmeter-${JMETER_VERSION}
 ENV JMETER_BIN $JMETER_HOME/bin
 ENV IP 0.0.0.0
