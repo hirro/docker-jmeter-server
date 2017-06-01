@@ -18,6 +18,7 @@ COPY dependencies /tmp/dependencies
 RUN tar -xzf /tmp/dependencies/apache-jmeter-${JMETER_VERSION}.tgz -C /usr/local && \
     unzip -oq "/tmp/dependencies/JMeterPlugins-*.zip" -d $JMETER_HOME && \
     cp /tmp/dependencies/*.jar $JMETER_HOME/lib && \
+    cp /tmp/dependencies/*.properties $JMETER_BIN && \
     apt-get -yqq purge unzip && \
     apt-get -yqq autoremove && \
     rm -rf /tmp/dependencies
@@ -28,6 +29,10 @@ WORKDIR $JMETER_HOME
 
 EXPOSE $RMI_PORT
 
+VOLUME /jmx /results
+
 COPY docker-entrypoint.sh /
 
 ENTRYPOINT ["/docker-entrypoint.sh"]
+
+CMD ["slave"]
