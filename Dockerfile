@@ -5,8 +5,9 @@ MAINTAINER Jim Arnell <hirro@users.noreply.github.com>
 ENV JMETER_VERSION 3.2
 ENV JMETER_HOME /usr/local/apache-jmeter-${JMETER_VERSION}
 ENV JMETER_BIN $JMETER_HOME/bin
+ENV SERVER_PORT 1099
+ENV CLIENT_PORT 60000
 ENV IP 0.0.0.0
-ENV RMI_PORT 1099
 
 RUN apt-get -qq update && \
     apt-get -yqq install openjdk-8-jre-headless unzip && \
@@ -27,7 +28,7 @@ ENV PATH $PATH:$JMETER_BIN
 
 WORKDIR $JMETER_HOME
 
-EXPOSE $RMI_PORT
+EXPOSE 1099 60000
 
 VOLUME /jmx /results
 

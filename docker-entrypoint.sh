@@ -1,5 +1,6 @@
 #!/bin/bash
 set -e
+
 freeMem=`awk '/MemFree/ { print int($2/1024) }' /proc/meminfo`
 s=$(($freeMem/10*8))
 x=$(($freeMem/10*8))
@@ -7,28 +8,36 @@ n=$(($freeMem/10*2))
 export JVM_ARGS="-Xmn${n}m -Xms${s}m -Xmx${x}m"
 
 MODE="$1"
-REMOTE_HOSTS="$2"
 
 case "${MODE}" in
 
 master)
-	DIR="/results/$(date "+%Y-%m-%d/%H.%M.%S")"
-	mkdir -p ${DIR}
-	cd ${DIR}
+	shift 1
+	R="$*"
+	if [ ${R} ]; then
+		R="-R ${R//\ /,}" # replace spaces for commas
+	fi
+	
+	cd /results
+	rm -rf *
+	# published server port may vary
 	exec jmeter -n \
+	    -D "java.rmi.server.hostname=${IP}" \
+	    -D "client.rmi.localport=60000" \
+	    -D "server.rmi.localport=${SERVER_PORT}" \
 		-t /jmx \
-		-D "java.rmi.server.hostname=${IP}" \
 		-l results.jtl -e -o dashboard \
-		-R ${REMOTE_HOSTS}
+		${R}
 ;;
 
 slave)
 	JMETER_LOG="jmeter-server.log" && touch $JMETER_LOG && tail -f $JMETER_LOG &
+	# published client port may vary 
 	exec jmeter-server \
-		-JJVM_ID=${IP//.} \
 	    -D "java.rmi.server.hostname=${IP}" \
-	    -D "client.rmi.localport=${RMI_PORT}" \
-	    -D "server.rmi.localport=${RMI_PORT}"
+	    -D "client.rmi.localport=${CLIENT_PORT}" \
+	    -D "server.rmi.localport=1099" \
+		-JJVM_ID=${IP//.}
 ;;
 
 esac
