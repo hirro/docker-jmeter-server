@@ -14,10 +14,10 @@ case "${MODE}" in
 master)
 	shift 1
 	R="$*"
-	if [ ${R} ]; then
+	if [ "${R}" ]; then
 		R="-R ${R//\ /,}" # replace spaces for commas
 	fi
-	
+
 	cd /results
 	rm -rf *
 	# published server port may vary
