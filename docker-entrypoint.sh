@@ -7,6 +7,13 @@ x=$(($freeMem/10*8))
 n=$(($freeMem/10*2))
 export JVM_ARGS="-Xmn${n}m -Xms${s}m -Xmx${x}m"
 
+while getopts "p:" opt; do
+    case $opt in
+        p  ) PROPERTIES+=("$OPTARG");;
+    esac
+done
+shift $((OPTIND -1))
+
 case "$1" in
 
 master)
@@ -15,18 +22,20 @@ master)
 	if [ "${R}" ]; then
 		R="-R ${R//\ /,}" # replace spaces with commas
 	fi
-
+	props=""
+	for p in "${PROPERTIES[@]}"; do
+        props="${props} -J${p} -G${p}"
+	done		
 	cd /results
 	rm -rf *
 	# published server port may vary
-	exec jmeter -n \
+	jmeter -n ${props} \
 	    -D "java.rmi.server.hostname=${IP}" \
 	    -D "client.rmi.localport=60000" \
 	    -D "server.rmi.localport=${SERVER_PORT}" \
 		-t /jmx \
 		-l results.jtl -e -o dashboard \
 		${R}
-
 	# run example:
 	# docker run --rm --name master \
 	# 	--env IP=192.168.99.100 \
@@ -34,6 +43,9 @@ master)
 	# 	--volume /home/docker/results:/results \
 	# 	--publish 60000:60000 \
 	# 	wscherphof/jmeter:3.2 \
+	# 	-p NODE_0=192.168.99.100 \
+	# 	-p NODE_1=192.168.99.101 \
+	# 	-p NODE_2=192.168.99.102 \
 	# 	master 192.168.99.103 192.168.99.104 192.168.99.105
 ;;
 
@@ -45,7 +57,6 @@ slave)
 	    -D "client.rmi.localport=${CLIENT_PORT}" \
 	    -D "server.rmi.localport=1099" \
 		-JJVM_ID=${IP//.} # remove dots
-
 	# run example:
 	# docker run --rm --detach --name slave 
 	# 	--env IP=192.168.99.103 \
